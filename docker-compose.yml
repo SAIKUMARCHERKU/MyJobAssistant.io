@@ -1,0 +1,32 @@
+version: "3.8"
+
+services:
+  backend:
+    build: ./BackEnd
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./BackEnd:/server
+    depends_on:
+      - mongo
+    environment:
+      - FLASK_ENV=development
+
+  frontend:
+    build: ./WebApplication/job-tracker
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./WebApplication/job-tracker:/app
+    depends_on:
+      - backend
+
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
